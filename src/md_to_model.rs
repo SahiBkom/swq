@@ -75,7 +75,7 @@ where
                             "Materiaal" => self.action = Action::Materiaal,
                             "Verklaring" => self.action = Action::Verklaring,
                             other => {
-                                if other.ends_with("?") {
+                                if other.ends_with('?') {
                                     self.model.vraag.push_str(&other);
                                     self.action = Action::Antwoord;
                                 }
@@ -107,10 +107,14 @@ where
                         self.model.voorbereiding.push_str(&text);
                     }
                     Action::Materiaal => {
-                        self.model.materiaal.last_mut().map(|s| s.push_str(&text));
+                        if let Some(s) = self.model.materiaal.last_mut() {
+                            s.push_str(&text)
+                        }
                     }
                     Action::Antwoord => {
-                        self.model.antwoord.last_mut().map(|s| s.push_str(&text));
+                        if let Some(s) = self.model.antwoord.last_mut() {
+                            s.push_str(&text)
+                        }
                     }
                     Action::Verklaring => {
                         self.model.verklaring.push_str(&text);
