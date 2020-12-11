@@ -65,6 +65,8 @@ fn main() -> Result<(), String> {
         m => models.resize_with(models.len() + 4 - m % 4, Default::default),
     };
 
+    models.sort_by(|a, b| a.path.cmp(&b.path));
+
     let mut latex = model_to_lex::ModelToLatex::new();
     for (a, b, c, d) in models.into_iter().tuples() {
         latex.voorkant(&a);
