@@ -6,10 +6,10 @@ om de boel te blussen.
 - Het vuur wordt geblust.
 - Water heeft geen effect op het vuur.
 - Er komt een steekvlam.
-- De leiding gooit olie in plaats van water op het vuur om een steekvlam te maken.Er komt een steekvlam omdat het water in het vuur gaat koken en dat de olie uit elkaar laat gaan. Dit zorgt voor een beter mengverhouding olie / zuurstof wat voor een steekvlam zorgt.
+- De leiding gooit olie in plaats van water op het vuur om een steekvlam te maken.
 
 # Verklaring
-Er komt een steekvlam omdat het water in het vuur gaat koken
+Er komt een steekvlam, omdat het water in het vuur gaat koken
 en dat de olie uit elkaar laat gaan. Dit zorgt voor een beter
 mengverhouding olie / zuurstof wat voor een steekvlam zorgt.
 

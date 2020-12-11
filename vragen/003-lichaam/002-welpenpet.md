@@ -12,10 +12,7 @@ welpen pet maat.
 - 58 cm
 
 # Verklaring
-Wij hebben geen idee, maar nu weten we het. Wij
-hebben het aantal passen bij elkaar opgeteld en
-dat gedeelte door het aantal welpen en 100.
-En dat is het resultaat.
+We hebben nu voor alle welpen de maat getuft en zo weten we het.
 
 We verwachte dat als we hier een grafiek van teken 
 dat we de normaal verdeling krijgen. 

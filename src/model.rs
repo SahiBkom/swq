@@ -1,5 +1,6 @@
 #[derive(Debug, Clone, Default)]
 pub struct Model {
+    pub path: String,
     pub introductie: String,
     pub vraag: String,
     pub antwoord: Vec<String>,

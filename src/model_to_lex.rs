@@ -1,31 +1,8 @@
 use crate::model::Model;
-use latex::{Align, Document, DocumentClass, Element, List, ListKind, Section};
+use latex::{Document, Element, List, ListKind, Section};
 use std::fs::File;
-use std::io::{self, Error, Write};
+use std::io::Write;
 use std::path::Path;
-use std::process::Command;
-
-pub fn model2latex(doc: &mut Document, model: Model) -> Result<(), ()> {
-    let mut introductie = Section::new("Introductie");
-    introductie.push(&*model.introductie);
-    doc.push(introductie);
-
-    let mut vraag = Section::new(&*model.vraag);
-
-    let mut list = List::new(ListKind::Itemize);
-    list.argument(&"noitemsep");
-    for a in model.antwoord.iter() {
-        list.push(a);
-    }
-    vraag.push(list);
-    doc.push(vraag);
-
-    let mut verklaring = Section::new("Verklaring");
-    verklaring.push(&*model.verklaring);
-    doc.push(verklaring);
-
-    Ok(())
-}
 
 pub struct ModelToLatex {
     doc: Document,
@@ -50,6 +27,9 @@ impl ModelToLatex {
 
     pub fn voorkant(&mut self, model: &Model) -> &mut Self {
         self.push(Element::ClearPage);
+
+        // self.push(Element::UserDefined(model.path.to_string()));
+
         let mut introductie = Section::new("Introductie");
         introductie.push(&*model.introductie);
         self.push(introductie);
@@ -105,7 +85,7 @@ impl ModelToLatex {
 
     pub fn write_to_file<P: AsRef<Path>>(&self, filename: P) -> Result<(), ()> {
         let mut file = File::create(filename).map_err(|_| ())?;
-        write!(file, "{}", self.rendered().map_err(|_| ())?);
+        write!(file, "{}", self.rendered().map_err(|_| ())?).map_err(|_| ())?;
         Ok(())
     }
 }

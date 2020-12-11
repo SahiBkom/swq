@@ -1,9 +1,6 @@
 use crate::model::Model;
-use pulldown_cmark::escape::{escape_html, StrWrite, WriteWrapper};
 use pulldown_cmark::Event::*;
-use pulldown_cmark::{
-    html, Alignment, CodeBlockKind, CowStr, Event, LinkType, Options, Parser, Tag,
-};
+use pulldown_cmark::{Event, Tag};
 use std::io;
 
 #[derive(Debug)]
@@ -39,83 +36,70 @@ where
     pub fn run(&mut self) -> io::Result<()> {
         while let Some(event) = self.iter.next() {
             match event {
-                Start(tag) => {
-                    match tag {
-                        Tag::Paragraph => {}
-                        Tag::Heading(h) => {
-                            dbg!(("heading", h, &self.action));
-                            self.action = Action::Header(String::new());
+                Start(tag) => match tag {
+                    Tag::Paragraph => {}
+                    Tag::Heading(_h) => {
+                        self.action = Action::Header(String::new());
+                    }
+                    Tag::BlockQuote => {}
+                    Tag::CodeBlock(_) => {}
+                    Tag::List(_l) => {}
+                    Tag::Item => match self.action {
+                        Action::Materiaal => {
+                            self.model.materiaal.push(String::new());
                         }
-                        Tag::BlockQuote => {}
-                        Tag::CodeBlock(_) => {}
-                        Tag::List(l) => {
-                            dbg!(&l);
+                        Action::Antwoord => {
+                            self.model.antwoord.push(String::new());
                         }
-                        Tag::Item => match self.action {
-                            Action::Materiaal => {
-                                self.model.materiaal.push(String::new());
+                        _ => {}
+                    },
+                    Tag::FootnoteDefinition(_) => {}
+                    Tag::Table(_) => {}
+                    Tag::TableHead => {}
+                    Tag::TableRow => {}
+                    Tag::TableCell => {}
+                    Tag::Emphasis => {}
+                    Tag::Strong => {}
+                    Tag::Strikethrough => {}
+                    Tag::Link(_, _, _) => {}
+                    Tag::Image(_, _, _) => {}
+                },
+                End(tag) => match tag {
+                    Tag::Paragraph => {}
+                    Tag::Heading(_h) => match &self.action {
+                        Action::Header(s) => match s.as_str() {
+                            "Intro" => self.action = Action::Intro,
+                            "Voorbereiding" => {
+                                self.action = Action::Voorbereiding;
                             }
-                            Action::Antwoord => {
-                                self.model.antwoord.push(String::new());
+                            "Materiaal" => self.action = Action::Materiaal,
+                            "Verklaring" => self.action = Action::Verklaring,
+                            other => {
+                                if other.ends_with("?") {
+                                    self.model.vraag.push_str(&other);
+                                    self.action = Action::Antwoord;
+                                }
                             }
-                            _ => {}
                         },
-                        Tag::FootnoteDefinition(_) => {}
-                        Tag::Table(_) => {}
-                        Tag::TableHead => {}
-                        Tag::TableRow => {}
-                        Tag::TableCell => {}
-                        Tag::Emphasis => {}
-                        Tag::Strong => {}
-                        Tag::Strikethrough => {}
-                        Tag::Link(_, _, _) => {}
-                        Tag::Image(_, _, _) => {}
-                    }
-
-                    // self.start_tag(tag)?;
-                }
-                End(tag) => {
-                    match tag {
-                        Tag::Paragraph => {}
-                        Tag::Heading(h) => {
-                            dbg!(("heading end", h, &self.action));
-                            match &self.action {
-                                Action::Header(s) => match s.as_str() {
-                                    "Intro" => self.action = Action::Intro,
-                                    "Voorbereiding" => {
-                                        self.action = Action::Voorbereiding;
-                                    }
-                                    "Materiaal" => self.action = Action::Materiaal,
-                                    "Verklaring" => self.action = Action::Verklaring,
-                                    other => {
-                                        if other.ends_with("?") {
-                                            self.model.vraag.push_str(&other);
-                                            self.action = Action::Antwoord;
-                                        }
-                                    }
-                                },
-                                _ => {}
-                            }
-                        }
-                        Tag::BlockQuote => {}
-                        Tag::CodeBlock(_) => {}
-                        Tag::List(_) => {}
-                        Tag::Item => {}
-                        Tag::FootnoteDefinition(_) => {}
-                        Tag::Table(_) => {}
-                        Tag::TableHead => {}
-                        Tag::TableRow => {}
-                        Tag::TableCell => {}
-                        Tag::Emphasis => {}
-                        Tag::Strong => {}
-                        Tag::Strikethrough => {}
-                        Tag::Link(_, _, _) => {}
-                        Tag::Image(_, _, _) => {}
-                    }
-                    // self.end_tag(tag)?;
-                }
+                        _ => {}
+                    },
+                    Tag::BlockQuote => {}
+                    Tag::CodeBlock(_) => {}
+                    Tag::List(_) => {}
+                    Tag::Item => {}
+                    Tag::FootnoteDefinition(_) => {}
+                    Tag::Table(_) => {}
+                    Tag::TableHead => {}
+                    Tag::TableRow => {}
+                    Tag::TableCell => {}
+                    Tag::Emphasis => {}
+                    Tag::Strong => {}
+                    Tag::Strikethrough => {}
+                    Tag::Link(_, _, _) => {}
+                    Tag::Image(_, _, _) => {}
+                },
                 Text(text) => match &self.action {
-                    Action::Header(s) => {
+                    Action::Header(_s) => {
                         self.action = Action::Header(text.into_string().trim().to_string())
                     }
                     Action::Intro => self.model.introductie.push_str(&text),
@@ -123,44 +107,29 @@ where
                         self.model.voorbereiding.push_str(&text);
                     }
                     Action::Materiaal => {
-                        self.model
-                            .materiaal
-                            .last_mut()
-                            .map(|mut s| s.push_str(&text));
+                        self.model.materiaal.last_mut().map(|s| s.push_str(&text));
                     }
                     Action::Antwoord => {
-                        self.model
-                            .antwoord
-                            .last_mut()
-                            .map(|mut s| s.push_str(&text));
+                        self.model.antwoord.last_mut().map(|s| s.push_str(&text));
                     }
                     Action::Verklaring => {
                         self.model.verklaring.push_str(&text);
                     }
                     _ => {}
                 },
-                Code(text) => {
-                    // self.write("<code>")?;
-                    // escape_html(&mut self.writer, &text)?;
-                    // self.write("</code>")?;
-                }
-                Html(html) => {
-                    // self.write(&html)?;
-                }
+                Code(_text) => {}
+                Html(_html) => {}
                 SoftBreak => {
-                    // self.write_newline()?;
+                    // Voeg een spatie toe om te voorkomen dat dingen aan elkaar belanden.
+                    if let Some(s) = self.get_text_mut() {
+                        s.push_str(" ");
+                    }
                 }
                 HardBreak => {
-                    // self.write("<br />\n")?;
+                    // Komt niet voor?
                 }
-                Rule => {
-                    // if self.end_newline {
-                    //     self.write("<hr />\n")?;
-                    // } else {
-                    //     self.write("\n<hr />\n")?;
-                    // }
-                }
-                FootnoteReference(name) => {}
+                Rule => {}
+                FootnoteReference(_name) => {}
                 TaskListMarker(true) => {}
                 TaskListMarker(false) => {}
             }
@@ -169,7 +138,15 @@ where
         Ok(())
     }
 
-    pub fn model(&self) -> Model {
-        self.model.clone()
+    fn get_text_mut(&mut self) -> Option<&mut String> {
+        match &self.action {
+            Action::None => None,
+            Action::Header(_) => None,
+            Action::Intro => Some(&mut self.model.introductie),
+            Action::Voorbereiding => Some(&mut self.model.voorbereiding),
+            Action::Materiaal => self.model.materiaal.last_mut(),
+            Action::Antwoord => self.model.antwoord.last_mut(),
+            Action::Verklaring => Some(&mut self.model.voorbereiding),
+        }
     }
 }

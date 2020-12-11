@@ -1,7 +1,7 @@
 # Intro
 Jullie tellen allemaal het aantal passen tussen deze
-2 lijnen. Wij kunnen dan uitreken wat001 jullie gemiddel
-pas groote is.
+2 lijnen. Wij kunnen dan uitreken wat jullie gemiddeld
+pas grote is.
 
 # Hoe groot is een welpen pas?
 - 50 cm
@@ -12,7 +12,8 @@ pas groote is.
 # Verklaring
 Wij hebben geen idee, maar nu weten we het. Wij
 hebben het aantal passen bij elkaar opgeteld en
-dat gedeelt door het aantal welpen en 100.
+dat gedeelte door het aantal welpen en door 100.
+
 En dat is het resultaat.
 
 # Materiaal

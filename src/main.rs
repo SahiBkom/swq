@@ -5,16 +5,10 @@ mod model_to_lex;
 use crate::md_to_model::Md2Model;
 use crate::model::Model;
 use itertools::Itertools;
-use latex::{Document, DocumentClass, PreambleElement};
-use pulldown_cmark::escape::{escape_html, StrWrite, WriteWrapper};
-use pulldown_cmark::Event::*;
-use pulldown_cmark::{
-    html, Alignment, CodeBlockKind, CowStr, Event, LinkType, Options, Parser, Tag,
-};
+use pulldown_cmark::{Options, Parser};
 use scan_dir::ScanDir;
-use std::collections::HashMap;
 use std::fs::File;
-use std::io::{self, Error, Write};
+use std::io::Write;
 use std::path::PathBuf;
 use std::process::Command;
 use structopt::StructOpt;
@@ -42,13 +36,21 @@ fn main() -> Result<(), String> {
     println!("{:?}", opt);
 
     let mut models: Vec<_> = ScanDir::files()
-        .walk(opt.vragen, |iter| {
+        .walk(&opt.vragen, |iter| {
             iter.filter(|&(_, ref name)| name.ends_with(".md"))
                 .map(|(ref entry, _)| {
                     let markdown_input = std::fs::read_to_string(entry.path()).unwrap();
                     let parser = Parser::new_ext(&markdown_input, Options::empty());
 
-                    let mut model = Default::default();
+                    let mut model: Model = Default::default();
+                    model.path = String::from(
+                        entry
+                            .path()
+                            .strip_prefix(opt.vragen.clone())
+                            .expect("Start given path")
+                            .with_extension("")
+                            .to_string_lossy(),
+                    );
                     let mut md2model = Md2Model::new(parser, &mut model);
                     md2model.run().unwrap();
                     println!("{:#?}", model);
@@ -78,10 +80,10 @@ fn main() -> Result<(), String> {
     let mut path = opt.tmp.clone();
     path.push("report.tex");
     std::fs::create_dir_all(opt.tmp.clone()).expect("dir");
-    latex.write_to_file(path.clone());
+    latex.write_to_file(path).map_err(|e| format!("{:?}", e))?;
 
     // Then call latexmk on it
-    let exit_status = Command::new("latexmk")
+    let _exit_status = Command::new("latexmk")
         .current_dir(opt.tmp.clone())
         .arg("report.tex")
         .arg("-pdf")
@@ -89,7 +91,7 @@ fn main() -> Result<(), String> {
         .status()
         .map_err(|e| format!("{:?}", e))?;
 
-    let exit_status = Command::new("latexmk")
+    let _exit_status = Command::new("latexmk")
         .current_dir(opt.tmp.clone())
         .arg("report.tex")
         .arg("-pdf")
@@ -100,12 +102,12 @@ fn main() -> Result<(), String> {
     let my_str = include_str!("a6_to_a4.tex");
     let mut a6_to_a4_tex = opt.tmp.clone();
     a6_to_a4_tex.push("a6_to_a4.tex");
-    let mut file = File::create(a6_to_a4_tex.clone()).map_err(|e| format!("{:?}", e))?;
+    let mut file = File::create(a6_to_a4_tex).map_err(|e| format!("{:?}", e))?;
     file.write_all(my_str.as_ref())
         .map_err(|e| format!("{:?}", e))?;
-    file.sync_all();
+    file.sync_all().map_err(|e| format!("{:?}", e))?;
 
-    let exit_status = Command::new("latexmk")
+    let _exit_status = Command::new("latexmk")
         .current_dir(opt.tmp)
         .arg("a6_to_a4.tex")
         .arg("-pdf")
