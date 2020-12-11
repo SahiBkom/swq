@@ -1,5 +1,5 @@
 use crate::model::Model;
-use latex::{Document, Element, List, ListKind, Section};
+use latex::{Document, Element, List, ListKind, Paragraph, Section, SubSection};
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
@@ -22,30 +22,35 @@ impl ModelToLatex {
         doc.push(Element::UserDefined(
             "\\renewcommand{\\thesection}{\\hspace*{-1.0em}}".to_string(),
         ));
+        doc.push(Element::UserDefined(
+            "\\renewcommand{\\thesubsection}{\\hspace*{-1.0em}}".to_string(),
+        ));
         Self { doc }
     }
 
     pub fn voorkant(&mut self, model: &Model) -> &mut Self {
         self.push(Element::ClearPage);
 
-        // self.push(Element::UserDefined(model.path.to_string()));
+        let mut s = Section::new(&model.path);
 
-        let mut introductie = Section::new("Introductie");
+        let mut introductie = Paragraph::new();
         introductie.push(&*model.introductie);
-        self.push(introductie);
+        s.push(introductie);
 
-        let mut vraag = Section::new(&*model.vraag);
+        let mut vraag = SubSection::new(&*model.vraag);
         let mut list = List::new(ListKind::Itemize);
         list.argument(&"noitemsep");
         for a in model.antwoord.iter() {
             list.push(a);
         }
         vraag.push(list);
-        self.push(vraag);
+        s.push(vraag);
 
-        let mut verklaring = Section::new("Verklaring");
+        let mut verklaring = SubSection::new("Verklaring");
         verklaring.push(&*model.verklaring);
-        self.push(verklaring);
+        s.push(verklaring);
+
+        self.push(s);
 
         self
     }
