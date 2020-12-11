@@ -1,14 +1,14 @@
 # Intro
-Waarom zit er glas rond een gloeilamp. 
+In een open geknipte PET-fles wordt aluminium folie gedaan en gootsteen ontstopper toegevoerd. (Let op zeer kleine hoeveelheden gebruiken)
 
 # Wat gebeurt er?
-- Voor de veiligheid, anders kan er iets op de gloeidraad vallen.
-- Anders komt er zuurstof bij de gloeidraad en brand die door.
-- Mooi ontwerp
-- Dat weet de leiding niet.
+- De boel ontploft. (Dit gebeurt als de fles dicht was.)
+- Steekvlam (Als er een vonk je bij komt)
+- Er kan een zeer heftige reactie ontstaan (kan leiden tot de vorming van een behoorlijke hoeveelheid waterstof)
+- Niets
 
 # Verklaring
-Zuurstof zorgt er voor dat de gloeidraad verbrand.
+Let op dit is een zogenaamde open Croftybom.
 
 
 # Materiaal

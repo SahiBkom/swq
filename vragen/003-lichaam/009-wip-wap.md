@@ -16,5 +16,4 @@ F = M * A Kracht is massa maal arm. Dus 1 * 20 kg is minden dan 0.5 * 80 kg en d
 
 # Voorbereiding
 
-
 # Bronnen

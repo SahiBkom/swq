@@ -11,10 +11,9 @@
 TODO
 
 # Materiaal
-- kaars
-- glas
-- bak
-- water
+- Slang
+- Bakken / Emmes
+- Tafel
 
 
 # Voorbereiding

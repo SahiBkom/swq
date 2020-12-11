@@ -1,18 +1,18 @@
 # Intro
-Een melkpak wordt nu van de humus met een rotje afgeschoten. Wat gebuurt er
+Nu wordt er een vlinder afgestoken onder het melkpak.
 
 # Wat gebeurt er?
 - Het melkpak ontploft.
-- Het melkpak vliegt een heel klein beetje de lucht in. 
-- Het melkpak vliegt hoog dan de eerst keer de lucht in
-- Niets
+- Niets.
+- De leiding durft het niet aan te steken.
+- Het melkpak vliegt 3 keer zo hoog de lucht in.
 
 # Verklaring
-De druk die het rotje veroorzaakt wil het melkpak verlaten. Door dat alleen deonderkant van het melkpak open is kan de druk alleen daar er uit en wordt het melkpak de lucht in gestuurd.
+Het melkpak ontploft omdat het papier van de melkpak is niet sterk genoeg om de druk van de vlinder te weerstaan.
 
 # Materiaal
 - vuur
-- rotje
+- vlinder
 - melpak
 - tegel
 

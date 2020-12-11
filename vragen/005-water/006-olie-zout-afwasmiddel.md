@@ -11,12 +11,10 @@
 TODO
 
 # Materiaal
-- afwasmiddel
+- Afwasmiddel
 
 
 # Voorbereiding
-
-
 
 # Bronnen
 - https://nl.wikipedia.org/wiki/Emulsie

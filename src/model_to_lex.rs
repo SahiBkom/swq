@@ -57,13 +57,14 @@ impl ModelToLatex {
 
     pub fn achterkant(&mut self, model: &Model) -> &mut Self {
         self.push(Element::ClearPage);
+        self.push(Section::new(&model.path));
         self.push(Element::UserDefined("\\begin{multicols}{2}".to_string()));
-        let mut voorbereiding = Section::new("Voorbereiding");
-        voorbereiding.push(&*model.introductie);
+        let mut voorbereiding = SubSection::new("Voorbereiding");
+        voorbereiding.push(&*model.voorbereiding);
         self.push(voorbereiding);
         self.push(Element::UserDefined("\\vfill\\null".to_string()));
         self.push(Element::UserDefined("\\columnbreak".to_string()));
-        let mut materiaal = Section::new("Materiaal");
+        let mut materiaal = SubSection::new("Materiaal");
         let mut list = List::new(ListKind::Itemize);
         list.argument(&"noitemsep");
         for a in model.materiaal.iter() {

@@ -1,5 +1,5 @@
 # Intro
-In een bak met water staan een branden kaars. Nu wordt hier een glas overheen gezet op een paar lucifers. Wat gebeurt er?
+In een bak met water staan een branden kaars. Nu wordt hier een glas overheen gezet op een paar lucifers.
 
 # Wat gebeurt er dan?
 - Water stijgt om hoog in het glas en de kaars gaat uit.
