@@ -1,6 +1,6 @@
 # Intro
 
-# Kan een water balon tegen vuur?
+# Kan een water ballon tegen vuur?
 - Nee
 - Ja
     
