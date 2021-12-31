@@ -1,7 +1,9 @@
+mod md_index;
 mod md_to_model;
 mod model;
 mod model_to_lex;
 
+use crate::md_index::MdIndex;
 use crate::md_to_model::Md2Model;
 use crate::model::Model;
 use itertools::Itertools;
@@ -66,6 +68,8 @@ fn main() -> Result<(), String> {
     };
 
     models.sort_by(|a, b| a.path.cmp(&b.path));
+
+    MdIndex::create(&models).write_to_file("vragen/index.md");
 
     let mut latex = model_to_lex::ModelToLatex::new();
     for (a, b, c, d) in models.into_iter().tuples() {

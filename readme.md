@@ -4,6 +4,8 @@ Het doe van dit project is om makkelijk A6 kaartjes
 te maken met leuken proefje die je tijdens een opkomst
 kan doen.
 
+[Deze kaartje zitten in het archief](./vragen/index.md)
+
 ## Installatie
 
 ### rust
